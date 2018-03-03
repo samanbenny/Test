@@ -1,0 +1,121 @@
+
+entity Hint {
+	hintTitle String required
+}
+
+entity Content {
+	contentTitle String required
+}
+
+entity Category {
+	categoryTitle String required
+}
+
+entity Course {
+	courseTitle String required
+}
+
+/**
+ * Task entity.
+ * @author The JHipster team.
+ */
+entity Question {
+	questionTitle String required
+}
+
+/**
+ * The Employee entity.
+ */
+entity Answer {
+	answerTitle String required,
+    isCorrect Boolean required
+}
+
+entity Student {
+	firstName String required,
+	lastName String required,
+	age Integer
+}
+
+entity Teacher {
+	firstName String required,
+	lastName String required
+}
+
+entity Class {
+	classTitle String required,
+	classRate Integer required
+}
+
+entity Rate {
+	rateTitle String required
+}
+entity Test {
+	testTitle String,
+    testStartTime ZonedDateTime,
+    testExpireTime ZonedDateTime,
+    testCreateTime ZonedDateTime
+}
+
+entity Result {
+
+}
+entity CategoryPoint{
+	point Double required
+}
+
+entity CoursePoint{
+	point Double required
+}
+
+entity QuestionAnswer{
+
+}
+
+
+
+relationship OneToMany {
+	Category{course(courseTitle)} to Course{category(categoryTitle)},    
+    Course{hint(hintTitle)} to Hint{course(courseTitle)},
+    Course{content(contentTitle)} to Content{course(courseTitle)},
+    Course{question} to Question{course},
+    Course{coursepoint} to CoursePoint{course},
+    Test{category} to Category,
+    Test{course} to Course,
+    Question{answer} to Answer{question},
+    Test{question} to Question{test},
+    Test{class} to Class,
+    Result{coursepoint} to CoursePoint{result},
+	Result{questionanswer} to QuestionAnswer{result},
+	Result{categorypoint} to CategoryPoint{result}
+}
+
+relationship ManyToOne {
+	Result{test} to Test{result},
+    Result{rate} to Rate,
+	CategoryPoint{category(categoryTitle)} to Category,
+	Category{teacher} to Teacher{category},
+    Question{rate} to Rate{question},
+    Question{questionanswer} to QuestionAnswer{question},
+    Answer{questionanswer} to QuestionAnswer{answer},
+    Result{student} to Student{result},
+    Student{class} to Class{student}
+}
+
+relationship ManyToMany {
+   
+    Test{teacher} to Teacher
+    
+}
+// Set pagination options
+
+paginate all with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl 
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
